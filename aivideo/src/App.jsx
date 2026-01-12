@@ -121,15 +121,16 @@ function App() {
 
     const prompt = `
       Analyze these video frames for a high-fidelity Sora video generation prompt. 
-      Focus on achieving absolute broadcast realism and eliminating 'game-like' graphics.
+      Focus on achieving absolute broadcast realism and eliminating 'game-like' graphics or 3D-rendered aesthetics.
       
       Determine the following:
-      1. Precise Camera Settings: Lens type (e.g., 35mm, telephoto), f-stop feel.
-      2. Realistic Textures: Describe the grass, jersey fabric, and feline fur in terms of light interaction.
-      3. Visual Artifacts: Identify natural motion blur, sensor grain, and organic lens flare.
-      4. Lighting: Analyze the spectral quality of sunlight and shadows.
+      1. Precise Camera Settings: Lens type (e.g., 35mm, telephoto), f-stop feel, and natural telephoto compression.
+      2. Realistic Textures: Describe the grass, jersey fabric, and especially the feline fur (scruffy, irregular, non-uniform).
+      3. Physical Grounding: How the subjects interact with the environment (depressed grass, realistic shadows, weight distribution on feet).
+      4. Biological Irregularity: Identify non-linear, unpredictable organic movements of the cat that differ from scripted animations.
+      5. Visual Artifacts: Identify natural motion blur, sensor grain, organic lens flare, and slight interlacing artifacts typical of broadcast TV.
       
-      Return the results in a structured format that strictly emphasizes "Authentic TV Broadcast Realism".
+      Return the results in a structured format that strictly emphasizes "Authentic TV Broadcast Realism" and "Non-CGI Biological Authenticity".
     `;
 
     const result = await model.generateContent([prompt, ...imageParts]);
@@ -157,7 +158,7 @@ function App() {
     const stabilitySection = `[STABILITY] The camera is ${data.camera.stability}, exhibiting standard professional broadcast stability.`;
 
     // Explicitly mentioning the fast running and normal speed at the start
-    const subjectSection = `[SUBJECT] At the beginning, a soccer player runs fast and kicks the ball at normal speed. Suddenly, a ${data.subjects.role} enters the frame. The player's jersey and the cat's fur have realistic tangible textures.`;
+    const subjectSection = `[SUBJECT] A professional soccer player in a realistic fabric jersey runs fast and kicks the ball. Suddenly, an organic, non-CGI ${data.subjects.role} enters. The cat must exhibit "stray cat" characteristics: scruffy fur, unpredictable twitchy movements, and perfect physical grounding with the grass (visible blades of grass bending under paws).`;
 
     // Defining the distinct temporal transition from normal playback to slow motion
     const motionSection = `[MOTION] The video starts at normal playback speed (1.0x) with fast-paced action and natural motion blur. Then, the scene clearly transitions into ${data.segments[1].speed} at the exact moment the cat deflects the ball, creating a dramatic but realistic temporal shift.`;
@@ -165,9 +166,9 @@ function App() {
     const environmentSection = `[ENVIRONMENT] Set in a ${data.env.type}. The background shows a slightly out-of-focus cheering crowd, characteristic of professional sports coverage.`;
 
     // Crucial part to avoid 'game-like' look: adding broadcast specific tags
-    const lightingSection = `[LIGHTING & STYLE] ${data.lighting.source}, ${data.lighting.direction}. Overall visual is a 4k TV broadcast footage, featuring natural film grain, subtle sensor noise, and realistic color grading. ${geminiHint.substring(0, 300)}... No digital rendering or 3D-game artifacts. Authentic broadcast realism.`;
+    const lightingSection = `[LIGHTING & STYLE] ${data.lighting.source}, ${data.lighting.direction}. Visual style: RAW 4K TV broadcast footage. Features: heavy natural motion blur, subtle sensor noise, interlaced artifacts, and stadium floodlight bloom. Absolute rejection of 3D-game engine aesthetics, smooth digital surfaces, or scripted animation feel. ${geminiHint.substring(0, 300)}... Authentic biological realism.`;
 
-    const fullPrompt = `${cameraSection} ${stabilitySection} ${subjectSection} ${motionSection} ${environmentSection} ${lightingSection} ${geminiHint ? "\n\nDetailed Vision Analysis:\n" + geminiHint : ""} --sora-recon-v4 --broadcast-mode`;
+    const fullPrompt = `${cameraSection} ${stabilitySection} ${subjectSection} ${motionSection} ${environmentSection} ${lightingSection} ${geminiHint ? "\n\nDetailed Vision Analysis:\n" + geminiHint : ""} --sora-recon-v4 --broadcast-mode --organic-motion-v2 --no-cgi`;
     setGeneratedPrompt(fullPrompt);
   };
 
